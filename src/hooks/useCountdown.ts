@@ -1,4 +1,16 @@
-import { addDays, addHours, addMinutes, addMonths, addYears, differenceInDays, differenceInHours, differenceInMinutes, differenceInMonths, differenceInSeconds, differenceInYears } from "date-fns";
+import {
+  addDays,
+  addHours,
+  addMinutes,
+  addMonths,
+  addYears,
+  differenceInDays,
+  differenceInHours,
+  differenceInMinutes,
+  differenceInMonths,
+  differenceInSeconds,
+  differenceInYears,
+} from "date-fns";
 import { useEffect, useState } from "react";
 
 export interface ITimeLeft {
@@ -11,7 +23,6 @@ export interface ITimeLeft {
 }
 
 export const useCountdown = (targetDate: Date) => {
-
   const getTimeLeft = (to: Date): ITimeLeft => {
     const now = new Date();
     let tempDate = now;
@@ -34,9 +45,11 @@ export const useCountdown = (targetDate: Date) => {
     const seconds = differenceInSeconds(to, tempDate);
 
     return { years, months, days, hours, minutes, seconds };
-  }
+  };
 
-  const [timeLeft, setTimeLeft] = useState<ITimeLeft>(() => getTimeLeft(targetDate));
+  const [timeLeft, setTimeLeft] = useState<ITimeLeft>(() =>
+    getTimeLeft(targetDate)
+  );
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -46,4 +59,4 @@ export const useCountdown = (targetDate: Date) => {
   }, [targetDate]);
 
   return timeLeft;
-}
+};

@@ -1,3 +1,3 @@
 export const CreateCountdown = () => {
-  return <h1>Criar contagem</h1>
-}
+  return <h1>Criar contagem</h1>;
+};

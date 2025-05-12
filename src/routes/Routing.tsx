@@ -1,5 +1,12 @@
-import { Route, Routes } from "react-router-dom"
-import { Admin, Checkout, CreateCountdown, Home, NotFound, ViewCountdown } from "../pages"
+import { Route, Routes } from "react-router-dom";
+import {
+  Admin,
+  Checkout,
+  CreateCountdown,
+  Home,
+  NotFound,
+  ViewCountdown,
+} from "../pages";
 
 export const Routing = () => {
   return (
@@ -11,5 +18,5 @@ export const Routing = () => {
       <Route path="/admin" element={<Admin />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
-  )
-}
+  );
+};
