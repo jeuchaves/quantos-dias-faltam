@@ -21,13 +21,13 @@ module.exports = {
   },
   plugins: ["react", "@typescript-eslint", "prettier"],
   rules: {
-    "react/react-in-jsx-scope": "off", // Não é necessário no React 17+
-    "prettier/prettier": "error", // Mostra erros do Prettier como ESLint
-    "@typescript-eslint/no-unused-vars": "warn", // Avisa sobre variáveis não usadas
+    "react/react-in-jsx-scope": "off", 
+    "prettier/prettier": "error", 
+    "@typescript-eslint/no-unused-vars": "warn", 
   },
   settings: {
     react: {
-      version: "detect", // Detecta automaticamente a versão do React
+      version: "detect",
     },
   },
 };
