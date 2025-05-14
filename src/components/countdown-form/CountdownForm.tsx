@@ -1,9 +1,5 @@
-import { useState } from "react";
 import { PopoverContent, PopoverTrigger } from "@radix-ui/react-popover";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useNavigate } from "react-router-dom";
 import { CalendarIcon } from "lucide-react";
-import { useForm } from "react-hook-form";
 import { ptBR } from "date-fns/locale";
 import { format } from "date-fns";
 
@@ -22,46 +18,23 @@ import { Button } from "../ui/button";
 import { Popover } from "../ui/popover";
 import { Calendar } from "../ui/calendar";
 
-import {
-  countdownSchema,
-  type TCountdownFormValues,
-} from "@/schemas/countdown.schema";
-import { createCountdown } from "@/services/countdownService";
+import { type TCountdownFormValues } from "@/schemas/countdown.schema";
+import { useFormContext } from "react-hook-form";
 
-export const CountdownForm = () => {
-  const navigate = useNavigate();
-  const [photos, setPhotos] = useState<string[]>([]);
+interface ICountdownFormProps {
+  onSubmit: (data: TCountdownFormValues) => Promise<void>;
+  photos: string[];
+  addPhoto: () => void;
+  removePhoto: (index: number) => void;
+}
 
-  const form = useForm<TCountdownFormValues>({
-    resolver: zodResolver(countdownSchema),
-    defaultValues: {
-      photos: [],
-      title: "",
-      youtubeMusic: undefined,
-      message: undefined,
-      date: "",
-    },
-  });
-
-  const onSubmit = async (data: TCountdownFormValues) => {
-    const slug = await createCountdown(data);
-    navigate(`/contador/${slug}`);
-  };
-
-  const addPhoto = () => {
-    const url = prompt("Digite a URL da imagem");
-    if (url && photos.length < 3) {
-      const updated = [...photos, url];
-      setPhotos(updated);
-      form.setValue("photos", updated);
-    }
-  };
-
-  const removePhoto = (index: number) => {
-    const updated = photos.filter((_, i) => i !== index);
-    setPhotos(updated);
-    form.setValue("photos", updated);
-  };
+export const CountdownForm = ({
+  onSubmit,
+  photos,
+  addPhoto,
+  removePhoto,
+}: ICountdownFormProps) => {
+  const form = useFormContext<TCountdownFormValues>();
 
   return (
     <Form {...form}>
