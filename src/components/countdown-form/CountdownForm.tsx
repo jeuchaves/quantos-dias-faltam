@@ -6,7 +6,7 @@ import { ptBR } from "date-fns/locale";
 
 import {
   countdownSchema,
-  type CountdownFormValues,
+  type TCountdownFormValues,
 } from "@/schemas/countdown.schema";
 import {
   Form,
@@ -31,18 +31,18 @@ export const CountdownForm = () => {
   const navigate = useNavigate();
   const [photos, setPhotos] = useState<string[]>([]);
 
-  const form = useForm<CountdownFormValues>({
+  const form = useForm<TCountdownFormValues>({
     resolver: zodResolver(countdownSchema),
     defaultValues: {
-      title: "",
-      date: "",
-      message: "",
       photos: [],
-      youtubeMusic: "",
+      title: "",
+      youtubeMusic: undefined,
+      message: undefined,
+      date: "",
     },
   });
 
-  const onSubmit = async (data: CountdownFormValues) => {
+  const onSubmit = async (data: TCountdownFormValues) => {
     const slug = await createCountdown(data);
     navigate(`/contador/${slug}`);
   };
@@ -105,7 +105,7 @@ export const CountdownForm = () => {
                   <Calendar
                     mode="single"
                     selected={field.value ? new Date(field.value) : undefined}
-                    onSelect={field.onChange}
+                    onSelect={(date) => field.onChange(date?.toISOString())}
                     disabled={(date) =>
                       date < new Date() || date < new Date("1900-01-01")
                     }

@@ -5,17 +5,9 @@ import type { ICountdownData } from "../types/countdown";
 
 const COLLECTION_NAME = "countdowns";
 
-interface ICountdownPayload {
-  title: string;
-  date: Timestamp;
-  message: string;
-  photos: string[];
-  youtubeMusic: string;
-  isPremium: boolean;
-  createdAt: Timestamp;
-}
-
 export const createCountdown = async (data: ICountdownData) => {
+  console.log(data);
+
   const slug = slugify(data.title);
   const ref = collection(db, COLLECTION_NAME, slug);
   const existing = await getDoc(doc(ref, slug));
@@ -24,7 +16,7 @@ export const createCountdown = async (data: ICountdownData) => {
     throw new Error("Countdown already exists");
   }
 
-  const payload: ICountdownPayload = {
+  const payload = {
     title: data.title,
     date: Timestamp.fromDate(new Date(data.date)),
     message: data.message || "",

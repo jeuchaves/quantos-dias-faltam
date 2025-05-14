@@ -8,4 +8,4 @@ export const countdownSchema = z.object({
   photos: z.array(z.string().url()).max(3),
 });
 
-export type CountdownFormValues = z.infer<typeof countdownSchema>;
+export type TCountdownFormValues = z.infer<typeof countdownSchema>;
