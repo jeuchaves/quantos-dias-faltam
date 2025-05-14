@@ -1,17 +1,9 @@
 import { collection, doc, getDoc, setDoc, Timestamp } from "firebase/firestore";
 import { slugify } from "../lib/slugify";
 import { db } from "../firebase/config";
+import type { ICountdownData } from "../types/countdown";
 
 const COLLECTION_NAME = "countdowns";
-
-interface ICountdown {
-  title: string;
-  date: string;
-  message?: string;
-  photos?: string[];
-  youtubeMusic?: string;
-  isPremium?: boolean;
-}
 
 interface ICountdownPayload {
   title: string;
@@ -23,7 +15,7 @@ interface ICountdownPayload {
   createdAt: Timestamp;
 }
 
-const createCountdown = async (data: ICountdown) => {
+const createCountdown = async (data: ICountdownData) => {
   const slug = slugify(data.title);
   const ref = collection(db, COLLECTION_NAME, slug);
   const existing = await getDoc(doc(ref, slug));
