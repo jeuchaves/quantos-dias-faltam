@@ -3,7 +3,7 @@ import { CountdownForm } from "@/components/countdown-form/CountdownForm";
 export const CreateCountdown = () => {
   return (
     <div className="container mx-auto">
-      <div className="flex flex-col md:flex-row gap-8">
+      <div className="flex flex-col md:flex-row gap-8 mt-5">
         <div className="md:w-1/2">
           <h1 className="text-2xl font-bold mb-4">Quase lá!</h1>
           <p className="mb-6">Preencha os dados para criar seu contador</p>
