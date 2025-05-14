@@ -9,8 +9,9 @@ export const createCountdown = async (data: ICountdownData) => {
   console.log(data);
 
   const slug = slugify(data.title);
-  const ref = collection(db, COLLECTION_NAME, slug);
-  const existing = await getDoc(doc(ref, slug));
+
+  const docRef = doc(db, COLLECTION_NAME, slug);
+  const existing = await getDoc(docRef);
 
   if (existing.exists()) {
     throw new Error("Countdown already exists");
@@ -26,20 +27,15 @@ export const createCountdown = async (data: ICountdownData) => {
     createdAt: Timestamp.now(),
   };
 
-  await setDoc(doc(ref, slug), payload);
+  await setDoc(docRef, payload);
   return slug;
 };
 
-const getCountdownBySlug = async (slug: string) => {
+export const getCountdownBySlug = async (slug: string) => {
   const ref = collection(db, COLLECTION_NAME, slug);
   const snapshot = await getDoc(doc(ref, slug));
   if (!snapshot.exists()) {
     throw new Error("Countdown not found");
   }
   return { id: snapshot.id, ...snapshot.data() };
-};
-
-export const countdownService = {
-  createCountdown,
-  getCountdownBySlug,
 };

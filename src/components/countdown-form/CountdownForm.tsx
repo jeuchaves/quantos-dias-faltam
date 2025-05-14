@@ -1,13 +1,12 @@
 import { useState } from "react";
+import { PopoverContent, PopoverTrigger } from "@radix-ui/react-popover";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
+import { CalendarIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { ptBR } from "date-fns/locale";
+import { format } from "date-fns";
 
-import {
-  countdownSchema,
-  type TCountdownFormValues,
-} from "@/schemas/countdown.schema";
 import {
   Form,
   FormControl,
@@ -17,15 +16,17 @@ import {
   FormLabel,
   FormMessage,
 } from "../ui/form";
-import { createCountdown } from "@/services/countdownService";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
 import { Popover } from "../ui/popover";
-import { PopoverContent, PopoverTrigger } from "@radix-ui/react-popover";
-import { format } from "date-fns";
-import { CalendarIcon } from "lucide-react";
 import { Calendar } from "../ui/calendar";
+
+import {
+  countdownSchema,
+  type TCountdownFormValues,
+} from "@/schemas/countdown.schema";
+import { createCountdown } from "@/services/countdownService";
 
 export const CountdownForm = () => {
   const navigate = useNavigate();
