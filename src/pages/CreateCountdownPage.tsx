@@ -49,7 +49,7 @@ export const CreateCountdownPage = () => {
     <div className="container mx-auto p-4">
       <FormProvider {...form}>
         <div className="flex flex-col md:flex-row gap-8">
-          <div className="md:w-1/2">
+          <div className="md:w-2/3">
             <h1 className="text-2xl font-bold mb-4">Quase lá!</h1>
             <p className="mb-6">Preencha os dados para criar seu contador</p>
             <CountdownForm
@@ -59,7 +59,7 @@ export const CreateCountdownPage = () => {
               removePhoto={removePhoto}
             />
           </div>
-          <div className="md:w-1/2 bg-gray-100 p-6 rounded-lg">
+          <div className="md:w-1/3">
             <CountdownPreview />
           </div>
         </div>
