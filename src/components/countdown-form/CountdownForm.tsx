@@ -18,23 +18,50 @@ import { Button } from "../ui/button";
 import { Popover } from "../ui/popover";
 import { Calendar } from "../ui/calendar";
 
-import { type TCountdownFormValues } from "@/schemas/countdown.schema";
-import { useFormContext } from "react-hook-form";
+import {
+  countdownSchema,
+  type TCountdownFormValues,
+} from "@/schemas/countdown.schema";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { createCountdown } from "@/services/countdownService";
 
-interface ICountdownFormProps {
-  onSubmit: (data: TCountdownFormValues) => Promise<void>;
-  photos: string[];
-  addPhoto: () => void;
-  removePhoto: (index: number) => void;
-}
+export const CountdownForm = () => {
+  const form = useForm<TCountdownFormValues>({
+    resolver: zodResolver(countdownSchema),
+    defaultValues: {
+      photos: [],
+      title: "",
+      youtubeMusic: "",
+      message: "",
+      date: "",
+    },
+  });
 
-export const CountdownForm = ({
-  onSubmit,
-  photos,
-  addPhoto,
-  removePhoto,
-}: ICountdownFormProps) => {
-  const form = useFormContext<TCountdownFormValues>();
+  const navigate = useNavigate();
+  const [photos, setPhotos] = useState<string[]>([]);
+
+  const onSubmit = async (data: TCountdownFormValues) => {
+    const slug = await createCountdown(data);
+    navigate(`/contador/${slug}`);
+  };
+
+  const addPhoto = () => {
+    const url = prompt("Digite a URL da imagem");
+    if (url && photos.length < 3) {
+      const updated = [...photos, url];
+      setPhotos(updated);
+      form.setValue("photos", updated);
+    }
+  };
+
+  const removePhoto = (index: number) => {
+    const updated = photos.filter((_, i) => i !== index);
+    setPhotos(updated);
+    form.setValue("photos", updated);
+  };
 
   return (
     <Form {...form}>
