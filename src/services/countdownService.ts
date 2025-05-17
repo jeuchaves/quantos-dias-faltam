@@ -1,11 +1,16 @@
-import { collection, doc, getDoc, setDoc, Timestamp } from "firebase/firestore";
+import { doc, getDoc, setDoc, Timestamp } from "firebase/firestore";
+
 import { slugify } from "../lib/slugify";
 import { db } from "../firebase/config";
-import type { ICountdownData } from "../types/countdown";
+import type {
+  Countdown,
+  CountdownDocument,
+  CreateCountdownInput,
+} from "@/types/countdown";
 
 const COLLECTION_NAME = "countdowns";
 
-export const createCountdown = async (data: ICountdownData) => {
+export const createCountdown = async (data: CreateCountdownInput) => {
   const slug = slugify(data.title);
 
   const docRef = doc(db, COLLECTION_NAME, slug);
@@ -27,10 +32,20 @@ export const createCountdown = async (data: ICountdownData) => {
 };
 
 export const getCountdownBySlug = async (slug: string) => {
-  const ref = collection(db, COLLECTION_NAME, slug);
-  const snapshot = await getDoc(doc(ref, slug));
+  const docRef = doc(db, COLLECTION_NAME, slug);
+  const snapshot = await getDoc(docRef);
+
   if (!snapshot.exists()) {
     throw new Error("Countdown not found");
   }
-  return { id: snapshot.id, ...snapshot.data() };
+
+  const data = snapshot.data() as CountdownDocument;
+
+  return {
+    id: snapshot.id,
+    title: data.title,
+    date: data.date.toDate(),
+    message: data.message,
+    createdAt: data.createdAt.toDate(),
+  } as Countdown;
 };
