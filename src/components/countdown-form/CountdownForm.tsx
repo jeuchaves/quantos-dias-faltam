@@ -1,12 +1,14 @@
 import { PopoverContent, PopoverTrigger } from "@radix-ui/react-popover";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useNavigate } from "react-router-dom";
 import { CalendarIcon } from "lucide-react";
+import { useForm } from "react-hook-form";
 import { ptBR } from "date-fns/locale";
 import { format } from "date-fns";
 
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -22,45 +24,23 @@ import {
   countdownSchema,
   type TCountdownFormValues,
 } from "@/schemas/countdown.schema";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
 import { createCountdown } from "@/services/countdownService";
 
 export const CountdownForm = () => {
   const form = useForm<TCountdownFormValues>({
     resolver: zodResolver(countdownSchema),
     defaultValues: {
-      photos: [],
       title: "",
-      youtubeMusic: "",
       message: "",
       date: "",
     },
   });
 
   const navigate = useNavigate();
-  const [photos, setPhotos] = useState<string[]>([]);
 
   const onSubmit = async (data: TCountdownFormValues) => {
     const slug = await createCountdown(data);
     navigate(`/contador/${slug}`);
-  };
-
-  const addPhoto = () => {
-    const url = prompt("Digite a URL da imagem");
-    if (url && photos.length < 3) {
-      const updated = [...photos, url];
-      setPhotos(updated);
-      form.setValue("photos", updated);
-    }
-  };
-
-  const removePhoto = (index: number) => {
-    const updated = photos.filter((_, i) => i !== index);
-    setPhotos(updated);
-    form.setValue("photos", updated);
   };
 
   return (
@@ -136,53 +116,6 @@ export const CountdownForm = () => {
             </FormItem>
           )}
         />
-
-        <FormField
-          control={form.control}
-          name="youtubeMusic"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Música (link do YouTube)</FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="https://www.youtube.com/watch?v=9bZkp7q19f0"
-                  {...field}
-                />
-              </FormControl>
-              <FormDescription>
-                Será tocada na página da contagem
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        {/* Fotos */}
-        <FormItem>
-          <FormLabel>Fotos (máximo 3)</FormLabel>
-          <div className="space-y-2">
-            {photos.map((url, index) => (
-              <div key={index} className="flex items-center gap-4">
-                <img src={url} className="w-20 h-20 object-cover rounded" />
-                <Button
-                  type="button"
-                  variant="destructive"
-                  onClick={() => removePhoto(index)}
-                >
-                  Remover
-                </Button>
-              </div>
-            ))}
-            {photos.length < 3 && (
-              <Button type="button" onClick={addPhoto} variant="outline">
-                + Adicionar foto
-              </Button>
-            )}
-          </div>
-          {form.formState.errors.photos && (
-            <FormMessage>{form.formState.errors.photos.message}</FormMessage>
-          )}
-        </FormItem>
 
         <Button type="submit" disabled={form.formState.isSubmitting}>
           Criar Contagem

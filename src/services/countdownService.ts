@@ -6,8 +6,6 @@ import type { ICountdownData } from "../types/countdown";
 const COLLECTION_NAME = "countdowns";
 
 export const createCountdown = async (data: ICountdownData) => {
-  console.log(data);
-
   const slug = slugify(data.title);
 
   const docRef = doc(db, COLLECTION_NAME, slug);
@@ -21,9 +19,6 @@ export const createCountdown = async (data: ICountdownData) => {
     title: data.title,
     date: Timestamp.fromDate(new Date(data.date)),
     message: data.message || "",
-    photos: (data.photos || []).slice(0, 3),
-    youtubeMusic: data.youtubeMusic || "",
-    isPremium: data.isPremium || false,
     createdAt: Timestamp.now(),
   };
 
