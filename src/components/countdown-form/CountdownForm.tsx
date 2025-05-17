@@ -73,7 +73,7 @@ export const CountdownForm = () => {
             <FormItem>
               <FormLabel>Título</FormLabel>
               <FormControl>
-                <Input placeholder="Ex: Aniversário da Ana" {...field} />
+                <Input placeholder="Ex: Formatura da Ana" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -144,7 +144,10 @@ export const CountdownForm = () => {
             <FormItem>
               <FormLabel>Música (link do YouTube)</FormLabel>
               <FormControl>
-                <Input placeholder="https://youtube.com/..." {...field} />
+                <Input
+                  placeholder="https://www.youtube.com/watch?v=9bZkp7q19f0"
+                  {...field}
+                />
               </FormControl>
               <FormDescription>
                 Será tocada na página da contagem
