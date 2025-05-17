@@ -1,9 +1,6 @@
 import type { ITimeLeft } from "@/hooks/useCountdown";
 
-export const formatTimeLeft = (
-  time: ITimeLeft,
-  options?: { addSuffix?: boolean }
-) => {
+export const formatTimeLeft = (time: ITimeLeft) => {
   const parts = [];
 
   if (time.years) parts.push(`${time.years} ano${time.years > 1 ? "s" : ""}`);
@@ -16,5 +13,5 @@ export const formatTimeLeft = (
   if (time.seconds || parts.length === 0)
     parts.push(`${time.seconds} segundo${time.seconds > 1 ? "s" : ""}`);
 
-  return options?.addSuffix ? "Faltam " : "" + parts.join(", ");
+  return parts.join(", ");
 };
